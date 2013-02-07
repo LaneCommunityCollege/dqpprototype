@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ current_institution.name }} | 
+{% endblock %}
+
+{% block maincontent %}
+    <div class="banner">
+        <h1>{{current_institution.name}}</h1>
+    </div>
+    <div id="spidergraphsupercontainer">
+        <div id="spidergraphcontainer"></div>
+    </div>
+    <div class="banner" id="lowerbanner"></div>
+    <div id="interiorcontent">
+        <h2>Programs</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Program Title</th>
+                    <th>Program</th>
+                    <th>Course</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="programbody">
+            {% for program in programs %}
+                <tr>
+                    <td><a href="/{{current_institution.shortname}}/{{program.id}}">{{ program.name }}</a></td>
+                    {% if program.get_dqp_scores_graphs %}
+                        <td><input class='graphshow' type="checkbox" name="program" value='{{program.get_dqp_scores_graphs|safe}}'></td>
+                    {% else %}
+                        <td><input disabled='disabled' type='checkbox'></td>
+                    {% endif %}
+                    {% if program.get_course_dqp_scores_graphs %}
+                        <td><input class='graphshow' type="checkbox" name="course" value='{{program.get_course_dqp_scores_graphs|safe}}'></td>
+                    {% else %}
+                        <td><input disabled='disabled' type='checkbox'></td>
+                    {% endif %}
+                    {% if program.comments %}
+                        <td><a href='#'><span class='ui-icon ui-icon-clock'></span></a></td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button class="btn" id="clearall">Clear all checkboxes</button>
+    </div>
+{% endblock %}
+
+{% block body_javascript %}
+<script>
+$(document).ready(function() {
+    //Set up the spider graph
+    $('#spidergraphcontainer').spidergraph({
+        'fields': ['Applied','Specialized','Intellectual','Broad','Civic'],//TODO generalize these
+        'gridcolor': 'rgba(20,20,20,1)'   
+    });
+});
+</script>
+{% endblock %}

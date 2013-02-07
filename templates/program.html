@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load spidergraph_extras %}
+
+{% block title %}
+    {{current_program }} | {{ current_institution.name }} |
+{% endblock %}
+
+{% block maincontent %}
+    <div class="banner">
+        <h1>{{current_program}} at <a href="/{{current_institution.shortname}}">{{current_institution.name}}</a></h1>
+    </div>
+    <div id="spidergraphsupercontainer">
+        <div id="spidergraphcontainer"></div>
+    </div>
+    <div class="banner" id="lowerbanner"></div>
+    <div id="interiorcontent">
+    {% if program_outcomes %}
+    <h2>Program Outcomes</h2>
+    <table>
+        <thead>
+            <tr>
+                <th style="display:none"></th>
+                <th>Weight</th>
+                <th>Outcomes</th>
+                <th>Applied Learning</th>
+                <th>Specialized Knowledge</th>
+                <th>Intellectual Skills</th>
+                <th>Integrative/Broad Knowledge</th>
+                <th>Civic Learning</th>
+                <th><span style="position:absolute;visibility:hidden;">Sparklines</span></th>
+                <th><span style="position:absolute;visibility:hidden;">Click to add to graph</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for outcome in program_outcomes %}
+            <tr class="dqp_row">
+                <td style="display:none" class="row_data">{{outcome.get_dqp_scores_graphs|safe}}</td>
+                <td>{{outcome.weight|percentage}}</td>
+                {% if outcome.comments %}
+                    <td><a href='#' class="comments" title="{{outcome.comments}}"><span style="display:inline-block" class='ui-icon ui-icon-comment'></span></a> {{outcome.outcome}}</td>
+                {% else %}
+                    <td>{{outcome.outcome}}</td>
+                {% endif %}
+
+                <td>{{outcome.applied|percentage}}</td>
+                <td>{{outcome.specialized|percentage}}</td>
+                <td>{{outcome.intellectual|percentage}}</td>
+                <td>{{outcome.broad|percentage}}</td>
+                <td>{{outcome.civic|percentage}}</td>
+                <td><span class="inlinebar">{{outcome.sparkdata|safe}}</span></td>
+                {% if outcome.get_dqp_scores_graphs %}
+                    <td><input class='graphshow' type="checkbox"  name="program" value='{{outcome.get_dqp_scores_graphs|safe}}'></td>
+                {% else %}
+                    <td><input disabled='disabled' type='checkbox'></td>
+                {% endif %}
+            </tr>
+            {% endfor %}        
+        </tbody>
+    </table>
+    {% endif %}
+    {% if courses %}
+    <h2>Courses</h2>
+        <table>
+            <thead>
+                <tr class="dqp_row">
+                    <th class="row_data" style="display:none">{{current_program.get_course_dqp_scores_graphs|safe}}</th>
+                    <th>Weight</th>
+                    <th>Course</th>
+                    <th>Applied Learning</th>
+                    <th>Specialized Knowledge</th>
+                    <th>Intellectual Skills</th>
+                    <th>Integrative/Broad Knowledge</th>
+                    <th>Civic Learning</th>
+                    <th><span class="inlinebar">{{current_program.sparkdata|safe}}</span></th>
+                    {% if current_program.get_course_dqp_scores_graphs %}
+                        <th><input class='graphshow' type="checkbox" name="course" value='{{current_program.get_course_dqp_scores_graphs|safe}}'></th>
+                    {% else %}
+                        <th><input disabled='disabled' type='checkbox'></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr class="dqp_row">
+                    <td style="display:none" class="row_data">{{course.get_dqp_scores_graphs|safe}}</td>
+                    <td>{{course.weight|percentage}}</td>
+                    <td><a href="/{{current_institution.shortname}}/{{current_program.id}}/{{course.id}}">{{course.course_number}}</a></td>
+                    {% if course.get_dqp_scores %}
+                        <td>{{course.applied|percentage}}</td>
+                        <td>{{course.specialized|percentage}}</td>
+                        <td>{{course.intellectual|percentage}}</td>
+                        <td>{{course.broad|percentage}}</td>
+                        <td>{{course.civic|percentage}}</td>
+                        <td><span class="inlinebar">{{course.sparkdata|safe}}</span></td>
+                        {% if course.get_dqp_scores_graphs %}
+                            <td><input class='graphshow' type="checkbox"  name="course" value='{{course.get_dqp_scores_graphs|safe}}'></td>
+                        {% else %}
+                            <td><input disabled='disabled' type='checkbox'></td>
+                        {% endif %}
+                    {% else %}
+                        <td></td><td></td><td></td><td></td><td></td><td></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <button class="btn" id="clearall">Clear all checkboxes</button>
+    {% endif %}
+    </div>
+{% endblock %}
+
+{% block body_javascript %}
+{% if current_program.get_dqp_scores_graphs %}
+<script>
+$(document).ready( function() {
+    graph_data = {{ current_program.get_dqp_scores_graphs|safe }}
+    $('#spidergraphcontainer').spidergraph({
+        'fields': graph_data['fields'],
+        'gridcolor': 'rgba(20,20,20,1)'   
+    });
+    $('#spidergraphcontainer').spidergraph('addlayer', { 
+        'strokecolor': 'rgba(130,104,230,0.8)',
+        'fillcolor': 'rgba(130,104,230,0.6)',
+        'data': graph_data['scores'].map(function(x){return parseInt(x)})
+    });
+});
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Oregon DQP{% endblock %}
+
+{% block header %}
+<header id="index_header">
+    <div class="filler_top">
+        <div class="banner">
+            <h1 class="pretend_header">Oregon Degree Qualifications Profile</h1>
+        </div>
+    </div>
+    <div class="banner">
+        <h1>Institutions</h1>
+    </div>
+</header>
+{% endblock %}
+
+{% block maincontent %}
+<ul>
+{% for institution in institutions %}
+    <li><a href="/{{institution.shortname}}">{{institution}}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}
+
+{# don't show the common javascript #}
+{% block common_javascirpt %}
+
+{% endblock %}
+
+{% block globalstyles %}
+style="width:960px;margin-left:auto;margin-right:auto;"
+{% endblock %}

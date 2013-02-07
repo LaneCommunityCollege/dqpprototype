@@ -1,0 +1,132 @@
+$text_color: #000;
+$white: #fff;
+$banner_color:#62808D;
+
+body{
+    margin-left:auto;
+    margin-right:auto;
+    width:960px;
+    a{
+        text-decoration:none;
+        &:hover{
+            text-decoration:none;
+        }
+    }
+}
+
+.banner{
+    min-height:32px;
+    background-color:$banner_color;
+    color: $white;
+    text-align:center;
+    padding-top:2px;
+    padding-bottom:4px;
+    h1, h2, h3, h4, h5, h6{
+        margin:5px 0;
+        a{
+            color:$white*0.95;
+            &:hover{
+                text-decoration:underline;
+            }
+        }
+    }
+}
+
+#index_header{
+    background-image:url('/static/pinetree.jpg');
+    .pretend_header{
+        font-size:36px;
+    }
+    .filler_top{
+        padding-top:100px;
+        height:190px;
+    }
+}
+
+#normal_header{
+    font-size:32px;
+    margin-bottom:10px;
+    padding-top:10px;
+}
+
+#global_container{
+    -webkit-box-shadow: 0px 0px 8px 8px #556;
+    box-shadow: 0px 0px 8px 8px #556;
+}
+
+#main_content{
+    padding: 25px 0px 25px 0px;
+    ul{
+        -moz-column-count:2;
+        -webkit-column-count:2;
+        column-count:2;
+        li{
+            font-size:18px;
+        }
+    }
+}
+#spidergraphsupercontainer{
+    width:100%;
+}
+#spidergraphcontainer{
+    position:relative;
+    width:500px;
+    height:500px;
+    margin-left:auto;
+    margin-right:auto;
+    .diagramText{
+        font-size:16px;
+    }
+}
+#interiorcontent{
+    margin:15px;
+    table{
+        border-color: $banner-color;
+        border-width: 0 0 1px 1px;
+        border-style: solid;
+        thead{
+            background-color:$banner_color;
+            color:$white;
+        }
+        th, td{
+            vertical-align:middle;
+            padding:3px;
+            border-color: $banner-color;
+            border-width: 1px 1px 0 0;
+            border-style:solid;
+            &:not(:first-child){
+                text-align:center;
+            }
+        }
+    }
+    button{
+        margin-top:1em;
+    }
+}
+
+/* Just for large screens */
+
+@media only screen and (min-width: 1220px){
+    body{
+        width:100%;
+        a{
+            text-decoration:none;
+            &:hover{
+                text-decoration:none;
+            }
+        }
+    }
+    #spidergraphsupercontainer{
+        width:30%;
+        position:fixed;
+        right:150px;
+        top:140px;
+    }
+    #interiorcontent{
+        width:57%;
+        min-height:500px;
+    }
+    #lowerbanner{
+        display:none;
+    }
+}
