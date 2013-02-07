@@ -1,7 +1,7 @@
 Degree Qualifications Profile Spidergraphs Prototype
 ==================
 
-![screenshot showing overlapping program and course objectives](https://github.com/LaneCommunityCollege/dqpprototype/raw/master/screnshot.png)
+![screenshot showing overlapping program and course objectives](https://raw.github.com/LaneCommunityCollege/dqpprototype/master/screenshot.png)
 
 With newer verions of Django (>= 1.4.3) and/or MySQL (>=5.5.29) there are some known issues with syncing the database.
 
